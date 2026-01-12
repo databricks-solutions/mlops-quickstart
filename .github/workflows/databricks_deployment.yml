@@ -13,7 +13,9 @@ env:
 jobs:
   deploy:
     name: Deploy to Databricks
+    # To use the default GitHub-hosted runner, comment the line below and uncomment 'ubuntu-latest'
     runs-on: linux-ubuntu-latest
+    # runs-on: ubuntu-latest
     outputs:
       target-environment: ${{ steps.environment.outputs.target }}
     
@@ -86,7 +88,9 @@ jobs:
 
   post-deployment:
     name: Post-deployment verification
+    # To use the default GitHub-hosted runner, comment the line below and uncomment 'ubuntu-latest'
     runs-on: linux-ubuntu-latest
+    # runs-on: ubuntu-latest
     needs: deploy
     if: success()
     
