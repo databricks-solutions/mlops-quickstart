@@ -29,7 +29,7 @@ resources:
       #       node_type_id: "Standard_D4s_v3"
       #       custom_tags:
       #         Environment: "${var.environment}"
-      #         Project: "e2e-data-project"
+      #         Project: "mlops-quickstart"
       #         Purpose: "model-training"
 
       # Job tasks
