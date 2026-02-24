@@ -45,7 +45,9 @@ Having a *Continuous Deployment (CD)* pipeline enabled means that if you make an
  - Check out the [Big Book of MLOps](https://www.databricks.com/resources/ebook/the-big-book-of-mlops).
  - Here you can find more info on how to manage different environments for MLOps: [MLOps Workflows](https://docs.databricks.com/aws/en/machine-learning/mlops/mlops-workflow).
  - If you don't want to retrain your models in each environment, you can **promote** your models across environments. Check out this documentation for more info: [Promote a model across environments](https://docs.databricks.com/aws/en/machine-learning/manage-model-lifecycle#promote-a-model-across-environments).  
- - This is a more advanced template for MLOps, called the "MLOps Stacks" template: [MLOps Stacks: model development process as code](https://docs.databricks.com/aws/en/machine-learning/mlops/mlops-stacks). It may be worth checking it as you mature and grow in your MLOps journey!
+ - If you are interested in Unit, Integration, or User Acceptance Testing, I recommend watching the "Testing Strategies with Databricks" module of the [Advanced Machine Learning Operations](https://customer-academy.databricks.com/learn/courses/3508/advanced-machine-learning-operations) training, from the Databricks Academy. 
+ - Want to vibe-code your Databricks solutions? Check out the [AI Dev Kit](https://github.com/databricks-solutions/ai-dev-kit)! You can use the skills implemented by it along with this repo to advance your solutions using AI-Driven Development.  
+ - Check out the "MLOps Stacks" template for a more advanced implementation: [MLOps Stacks: model development process as code](https://docs.databricks.com/aws/en/machine-learning/mlops/mlops-stacks). It may be worth checking it as you mature and grow in your MLOps journey!
 
 ## Q&A
 - **Can I specify who I want the approvers to be in my deployment job?** Yes, you restrict who has permissions to **APPLY TAGs** and also set a [governed tag policy](https://docs.databricks.com/aws/en/admin/governed-tags/) so only certain people are allowed to set a specific tag value (in this case, it will be the "approval" tag).
