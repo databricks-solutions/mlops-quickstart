@@ -11,7 +11,8 @@ targets:
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     default: true
     variables:
-      catalog_name: pedroz_e2edata_dev
+      catalog_name: mlops_quickstart_dev
+      schema_name: iris
       environment: dev
     # Override permissions for dev environment
     resources:
@@ -46,7 +47,8 @@ targets:
     workspace:
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     variables:
-      catalog_name: pedroz_e2edata_prod
+      catalog_name: mlops_quickstart_prod
+      schema_name: iris
       environment: prod
     
     # Override permissions for prod environment (only PowerUsers group)
@@ -72,7 +74,10 @@ targets:
 variables:
   catalog_name:
     description: "Name of the Unity Catalog to use"
-    default: "default_catalog"
+    default: "mlops_quickstart_dev"
+  schema_name:
+    description: "Name of the schema to use within the catalog"
+    default: "iris"
   environment:
     description: "Environment name (dev/prod)"
     default: "dev"

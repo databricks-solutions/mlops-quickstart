@@ -1,0 +1,141 @@
+---
+description: Reference guide for adapting this MLOps template to custom ML solutions on Databricks.
+globs:
+  - "**/*.ipynb"
+  - "**/*.yml"
+  - "**/*.yaml"
+---
+
+# Databricks E2E MLOps Template — Adaptation Guide
+
+This repository is an end-to-end MLOps template on Databricks. It uses the Iris classification dataset as a placeholder — adapt it to any dataset and ML problem type (regression, clustering, classification, forecasting, etc.).
+
+## Repository Structure
+
+```
+notebooks/
+  1_data_preprocessing/     → Data ingestion & feature engineering
+  2_model_training_and_deployment/
+    model_training.ipynb    → Train & register model in Unity Catalog
+    model_deployment/       → MLflow 3 deployment pipeline (evaluate → approve → deploy)
+  3_inference/
+    batch_inference.ipynb   → Batch scoring with the Champion model
+    realtime_inference.ipynb → Serving endpoint example
+resources/                  → Databricks Asset Bundle job definitions (one YAML per job)
+databricks.yml              → Bundle config with dev/prod targets and shared variables
+azure_pipelines.yml         → CD pipeline for Azure DevOps (GitHub Actions alternative in .github/)
+```
+
+## Parameterization Convention
+
+All notebooks accept parameters via `dbutils.widgets`. The three core parameters wired through every notebook and job are:
+
+| Parameter | Purpose | Default |
+|-----------|---------|---------|
+| `catalog_name` | Unity Catalog catalog for all tables and models | Set per target in `databricks.yml` |
+| `schema_name` | Schema within the catalog | `default` |
+| `model_version` | Model version (deployment notebooks only) | `1` |
+
+Three-level Unity Catalog references always use `{catalog_name}.{schema_name}.<object>` — never hardcode a schema or catalog name inside notebook code.
+
+Job YAML files in `resources/` declare these as job-level `parameters` (sourced from `${var.*}` bundle variables) and pass them to notebooks via `base_parameters`.
+
+## How to Adapt for a Custom ML Solution
+
+### 1. Data Ingestion (`data_ingestion.ipynb`)
+
+- Replace the `sklearn.datasets.load_iris()` call with your own data source (cloud storage, JDBC, API, Delta table, etc.).
+- Rename `iris_data` to a meaningful table name (e.g., `customer_churn_features`).
+- Adjust column transformations, data types, and primary key constraints to match your schema.
+- If you need multi-stage preprocessing (bronze → silver → gold), add more notebooks under `1_data_preprocessing/` and add corresponding tasks to the job YAML.
+
+### 2. Model Training (`model_training.ipynb`)
+
+- Replace `DecisionTreeClassifier` with the algorithm suited to your problem:
+  - **Regression**: `LinearRegression`, `XGBRegressor`, `LGBMRegressor`, etc.
+  - **Clustering**: `KMeans`, `DBSCAN`, etc. (note: clustering has no target column).
+  - **Classification**: `RandomForestClassifier`, `LogisticRegression`, `XGBClassifier`, etc.
+  - **Forecasting**: Prophet, ARIMA, or deep learning approaches.
+- Update the `features` list and `target` variable to match your dataset columns.
+- Adjust the logged metrics — use metrics appropriate for your problem type (e.g., `rmse`/`mae` for regression, `silhouette_score` for clustering, `accuracy`/`f1` for classification).
+- Update `selected_metric` in the best-run selection logic accordingly.
+- Update `model_name` (currently `iris_model`) to describe your model.
+- The model signature (`infer_signature`) is inferred automatically — just ensure you pass representative `X_train` and `y_train`.
+
+### 3. Model Deployment Pipeline (`model_deployment/`)
+
+This follows the [MLflow 3 Deployment Jobs](https://docs.databricks.com/gcp/en/mlflow/deployment-job) pattern: **evaluate → approve → deploy**.
+
+- **`1_model_evaluation.ipynb`**: Update the `eval_data`, `target`, and `model_type` to match your problem. For regression use `model_type = "regressor"`. You can add custom evaluation logic here.
+- **`2_model_approval.ipynb`**: This is a human-in-the-loop gate — it checks for an `approval` tag on the model version. Customize the tag name or approval logic as needed.
+- **`3_model_deployment.ipynb`**: Creates/updates a serving endpoint. Adjust `workload_size`, `scale_to_zero_enabled`, and endpoint naming conventions as needed. If you only need batch inference (no serving endpoint), you can remove or skip this notebook.
+- After registering your first model version, [connect it to the deployment job](https://docs.databricks.com/gcp/en/mlflow/deployment-job#connect-the-deployment-job-to-a-model) in the Databricks UI.
+
+### 4. Inference (`3_inference/`)
+
+- **Batch** (`batch_inference.ipynb`): Replace the sample data source with your actual new/unseen data. Update column names, prediction post-processing, and the inference table name (`iris_inferences` → your table). The CDF (Change Data Feed) setting at the end enables [Lakehouse Monitoring](https://docs.databricks.com/aws/en/lakehouse-monitoring/) — keep it if you plan to monitor model performance.
+- **Realtime** (`realtime_inference.ipynb`): Update `sample_input` to match your model's input schema. The endpoint name is derived from `{catalog_name}-{schema_name}-<model>-endpoint`.
+
+### 5. Job Definitions (`resources/*.yml`)
+
+Each YAML file defines a Databricks Workflows job. When adapting:
+
+- Rename jobs and task keys to reflect your pipeline.
+- Update `notebook_path` if you rename or add notebooks.
+- Add new `base_parameters` if your notebooks need extra parameters.
+- To use dedicated job clusters instead of serverless, uncomment and configure the `job_clusters` section.
+- Update `email_notifications` with your team's addresses.
+
+### 6. Bundle Configuration (`databricks.yml`)
+
+- Change `bundle.name` to your project name.
+- Set `catalog_name` and `schema_name` per target (dev/prod) under `targets.*.variables`.
+- Update permission groups (`PowerUsers`, `Developers`) to match your organization.
+- Add new variables under the top-level `variables` block if your notebooks need them.
+
+### 7. CI/CD
+
+- **Azure DevOps**: Update `WORKSPACE_HOST_NAME` in `azure_pipelines.yml` and add `DATABRICKS_CLIENT_ID` / `DATABRICKS_CLIENT_SECRET` as pipeline secrets.
+- **GitHub Actions**: Update `WORKSPACE_HOST_NAME` in `.github/workflows/databricks_deployment.yml` and add secrets in repo settings.
+- Branch mapping: `dev` branch → dev target, `master`/`main` branch → prod target.
+
+#### Adding a Staging Environment
+
+The template ships with `dev` and `prod` targets. To add a `staging` (or any intermediate) environment:
+
+1. **`databricks.yml`** — Add a new target block between `dev` and `prod`:
+   ```yaml
+   staging:
+     mode: production
+     workspace:
+       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+     variables:
+       catalog_name: <your_staging_catalog>
+       schema_name: default
+       environment: staging
+     resources:
+       jobs:
+         data_ingestion_job:
+           permissions:
+             - level: "CAN_MANAGE"
+               group_name: "PowerUsers"
+             - level: "CAN_MANAGE_RUN"
+               group_name: "Developers"
+         # ... repeat for each job with the desired permission levels
+   ```
+   Use a dedicated catalog (e.g., `myproject_staging`) to keep staging data isolated from dev and prod.
+
+2. **CI/CD pipeline** — Add a branch trigger for the staging environment:
+   - **Azure DevOps** (`azure_pipelines.yml`): Add `staging` to the `branches.include` list and extend the environment-detection script with a new condition mapping `refs/heads/staging` → `staging` target.
+   - **GitHub Actions** (`.github/workflows/databricks_deployment.yml`): Add an equivalent branch condition that runs `databricks bundle deploy --target staging` on pushes to the `staging` branch.
+
+3. **Service principal** — If staging uses a different workspace, add a separate set of `DATABRICKS_CLIENT_ID` / `DATABRICKS_CLIENT_SECRET` secrets for the staging environment, and update the pipeline to select the correct credentials based on the target.
+
+4. **Branch strategy** — A typical flow is `feature/* → dev → staging → master/main`, where staging acts as a pre-production validation gate. Protect the `staging` branch with required reviews or status checks to enforce quality before promotion to prod.
+
+## Key Conventions
+
+- **Challenger/Champion pattern**: newly trained models are registered with the `challenger` alias. After passing evaluation and approval, the deployment notebook promotes them to `Champion`. Inference notebooks always load the `@champion` alias.
+- **MLflow experiment naming**: experiments are scoped per user and catalog — `{user}/{model}_{catalog}` — to avoid collisions during development.
+- **Serving endpoint naming**: derived as `{catalog_name}-{schema_name}-{model}-endpoint` (dots replaced with dashes) to ensure valid endpoint names.
+- **Idempotent notebooks**: ingestion and inference notebooks check for table existence before deciding whether to create or append/overwrite.

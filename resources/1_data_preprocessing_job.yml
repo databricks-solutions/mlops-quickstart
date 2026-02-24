@@ -14,6 +14,8 @@ resources:
       parameters:
         - name: "catalog_name"
           default: "${var.catalog_name}"
+        - name: "schema_name"
+          default: "${var.schema_name}"
       
       # If you want to define a shared job cluster for data preprocessing,
       # uncomment the following section - this is an example that works for Azure Databricks
@@ -43,6 +45,7 @@ resources:
             notebook_path: "../notebooks/1_data_preprocessing/data_ingestion.ipynb"
             base_parameters:
               catalog_name: "{{job.parameters.catalog_name}}"
+              schema_name: "{{job.parameters.schema_name}}"
       
       # Timeout and retry settings
       timeout_seconds: 3600
@@ -51,4 +54,4 @@ resources:
       # Tags for organization
       tags:
         Environment: "${var.environment}"
-        Project: "e2e-data-project" 
+        Project: "mlops-quickstart" 

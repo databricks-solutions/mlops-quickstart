@@ -1,10 +1,10 @@
-# Databricks e2e Data Project 
+# Databricks MLOps Quickstart
 
 This is a simple end-to-end example of a Databricks MLOps project that uses the [Iris Dataset](https://scikit-learn.org/1.4/auto_examples/datasets/plot_iris_dataset.html).  
 The goal of this project is to create a model that allows you to automatically classify flowers into different species based on their properties, and to have a [CI/CD](https://en.wikipedia.org/wiki/CI/CD) pipeline enabled that will allow you to easily track and deploy your code to different environments, such as Development and Production.  
 
 As a part of this project, you will set up:
-- A job for ingesting the Iris data into a feature table (which, simply speaking, is a Delta table with a Primary Key)
+- A job for ingesting the Iris data into a feature table
 - A job for training a simple classification model and storing the model in the Unity Catalog
 - A job that uses the model to run inferences on the top of newly collected (unidentified) flowers
 - An MLflow 3 deployment job for automating the process of defining the model used for running the production inferences
@@ -37,8 +37,8 @@ Having a *Continuous Deployment (CD)* pipeline enabled means that if you make an
   
 ## Notes
  - If you want to clone this Repo to reproduce it on your end, don't forget to change the **host** and **catalog_name** from the [databricks.yml](databricks.yml) file, and: 
-     - If you are using GitHub Actions, you need to add 2 Secrets called **DATABRICKS_CLIENT_ID** and **DATABRICKS_CLIENT_SECRET** with your service principal authentication details and also update the **DATABRICKS_HOST** variable in the [.github/workflows/databricks-deployment.yml](.github/workflows/databricks_deployment.yml) file; 
-     - If you use Azure DevOps, then you also have to add these 2 parameters as pipeline secrets (**DATABRICKS_CLIENT_ID** and **DATABRICKS_CLIENT_SECRET**), and update the **DATABRICKS_HOST** variable in the [azure-pipelines.yml](azure_pipelines.yml) file. 
+     - If you are using GitHub Actions, you need to add 2 Secrets called **DATABRICKS_CLIENT_ID** and **DATABRICKS_CLIENT_SECRET** with your service principal authentication details and also update the **WORKSPACE_HOST_NAME** secret in the [.github/workflows/databricks-deployment.yml](.github/workflows/databricks_deployment.yml) file; 
+     - If you use Azure DevOps, then you also have to add these 2 parameters as pipeline secrets (**DATABRICKS_CLIENT_ID** and **DATABRICKS_CLIENT_SECRET**), and update the **WORKSPACE_HOST_NAME** variable in the [azure-pipelines.yml](azure_pipelines.yml) file. 
  - For this simple tutorial, we are using the same workspace and service principal for Dev and Prod, for the simplicity of demonstrating it. Make sure to check our documentation for more details on authentication and on how to manage different environments! 
 
 ## Learn more
