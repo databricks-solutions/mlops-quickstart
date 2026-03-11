@@ -11,73 +11,26 @@ targets:
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     default: true
     variables:
-      catalog_name: mlops_quickstart_dev
-      schema_name: iris
+      catalog_name: odoren_fevm_aws_catalog
+      schema_name: iris_dev
       environment: dev
-    # Override permissions for dev environment
-    resources:
-      jobs:
-        data_ingestion_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-            - level: "CAN_MANAGE_RUN"
-              group_name: "Developers"
-        model_training_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-            - level: "CAN_MANAGE_RUN"
-              group_name: "Developers"
-        model_deployment_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-            - level: "CAN_MANAGE_RUN"
-              group_name: "Developers"
-        batch_inference_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-            - level: "CAN_MANAGE_RUN"
-              group_name: "Developers"
 
   prod:
     mode: production
     workspace:
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     variables:
-      catalog_name: mlops_quickstart_prod
-      schema_name: iris
+      catalog_name: odoren_fevm_aws_catalog
+      schema_name: iris_prod
       environment: prod
-    
-    # Override permissions for prod environment (only PowerUsers group)
-    resources:
-      jobs:
-        data_ingestion_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-        model_training_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-        model_deployment_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-        batch_inference_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
 
 variables:
   catalog_name:
     description: "Name of the Unity Catalog to use"
-    default: "mlops_quickstart_dev"
+    default: "odoren_fevm_aws_catalog"
   schema_name:
     description: "Name of the schema to use within the catalog"
-    default: "iris"
+    default: "iris_dev"
   environment:
     description: "Environment name (dev/prod)"
     default: "dev"
