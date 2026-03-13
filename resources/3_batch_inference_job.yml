@@ -16,6 +16,8 @@ resources:
           default: "${var.catalog_name}"
         - name: "schema_name"
           default: "${var.schema_name}"
+        - name: "model_name"
+          default: "iris_model"
       
       # If you want to define a shared job cluster for data preprocessing,
       # uncomment the following section - this is an example that works for Azure Databricks
@@ -46,6 +48,7 @@ resources:
             base_parameters:
               catalog_name: "{{job.parameters.catalog_name}}"
               schema_name: "{{job.parameters.schema_name}}"
+              model_name: "{{job.parameters.model_name}}"
       
       # Timeout and retry settings
       timeout_seconds: 3600

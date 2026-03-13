@@ -12,10 +12,6 @@ resources:
       
       # Job parameters
       parameters:
-        - name: "catalog_name"
-          default: "${var.catalog_name}"
-        - name: "schema_name"
-          default: "${var.schema_name}"
         - name: "model_name"
           default: "${var.catalog_name}.${var.schema_name}.iris_model"
         - name: "model_version"
@@ -30,8 +26,7 @@ resources:
           notebook_task:
             notebook_path: "../notebooks/2_model_training_and_deployment/model_deployment/1_model_evaluation.ipynb"
             base_parameters:
-              catalog_name: "{{job.parameters.catalog_name}}"
-              schema_name: "{{job.parameters.schema_name}}"
+              model_name: "{{job.parameters.model_name}}"
               model_version: "{{job.parameters.model_version}}"
         
         - task_key: "approval"
@@ -43,8 +38,7 @@ resources:
           notebook_task:
             notebook_path: "../notebooks/2_model_training_and_deployment/model_deployment/2_model_approval.ipynb"
             base_parameters:
-              catalog_name: "{{job.parameters.catalog_name}}"
-              schema_name: "{{job.parameters.schema_name}}"
+              model_name: "{{job.parameters.model_name}}"
               model_version: "{{job.parameters.model_version}}"
         
         - task_key: "deployment"
@@ -56,8 +50,7 @@ resources:
           notebook_task:
             notebook_path: "../notebooks/2_model_training_and_deployment/model_deployment/3_model_deployment.ipynb"
             base_parameters:
-              catalog_name: "{{job.parameters.catalog_name}}"
-              schema_name: "{{job.parameters.schema_name}}"
+              model_name: "{{job.parameters.model_name}}"
               model_version: "{{job.parameters.model_version}}"
       
       # Timeout and retry settings
