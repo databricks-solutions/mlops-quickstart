@@ -99,5 +99,5 @@ stages:
           - script: |
               echo "Deployment to $(targetEnvironment) completed successfully"
               echo "You can now run the jobs manually using:"
-              echo "databricks bundle run data_ingestion_job --target $(targetEnvironment)"
+              echo "databricks bundle run mlops_pipeline_job --target $(targetEnvironment)"
             displayName: 'Display post-deployment information' 
