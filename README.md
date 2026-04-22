@@ -1,5 +1,8 @@
 # Databricks MLOps Quickstart
 
+> [YouTube video: watch now!](https://www.youtube.com/watch?v=8lUbYTXJHe4)
+<img src="http://img.youtube.com/vi/8lUbYTXJHe4/maxresdefault.jpg" alt="YouTube video - Watch now!" width="400"/>
+
 This is a simple end-to-end example of a Databricks MLOps project that uses the [Iris Dataset](https://scikit-learn.org/1.4/auto_examples/datasets/plot_iris_dataset.html).  
 The goal of this project is to create a model that allows you to automatically classify flowers into different species based on their properties, and to have a [CI/CD](https://en.wikipedia.org/wiki/CI/CD) pipeline enabled that will allow you to easily track and deploy your code to different environments, such as Development and Production.  
 
