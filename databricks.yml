@@ -15,32 +15,32 @@ targets:
       schema_name: iris
       environment: dev
     # Override permissions for dev environment
-    resources:
-      jobs:
-        data_ingestion_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-            - level: "CAN_MANAGE_RUN"
-              group_name: "Developers"
-        model_training_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-            - level: "CAN_MANAGE_RUN"
-              group_name: "Developers"
-        model_deployment_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-            - level: "CAN_MANAGE_RUN"
-              group_name: "Developers"
-        batch_inference_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-            - level: "CAN_MANAGE_RUN"
-              group_name: "Developers"
+    # resources:
+    #   jobs:
+        # data_ingestion_job:
+        #   permissions:
+        #     - level: "CAN_MANAGE"
+        #       group_name: "PowerUsers"
+        #     - level: "CAN_MANAGE_RUN"
+        #       group_name: "Developers"
+        # model_training_job:
+        #   permissions:
+        #     - level: "CAN_MANAGE"
+        #       group_name: "PowerUsers"
+        #     - level: "CAN_MANAGE_RUN"
+        #       group_name: "Developers"
+        # model_deployment_job:
+        #   permissions:
+        #     - level: "CAN_MANAGE"
+        #       group_name: "PowerUsers"
+        #     - level: "CAN_MANAGE_RUN"
+        #       group_name: "Developers"
+        # batch_inference_job:
+        #   permissions:
+        #     - level: "CAN_MANAGE"
+        #       group_name: "PowerUsers"
+        #     - level: "CAN_MANAGE_RUN"
+        #       group_name: "Developers"
 
   prod:
     mode: production
@@ -52,32 +52,32 @@ targets:
       environment: prod
     
     # Override permissions for prod environment (only PowerUsers group)
-    resources:
-      jobs:
-        data_ingestion_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-        model_training_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-        model_deployment_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
-        batch_inference_job:
-          permissions:
-            - level: "CAN_MANAGE"
-              group_name: "PowerUsers"
+    # resources:
+    #   jobs:
+        # data_ingestion_job:
+        #   permissions:
+        #     - level: "CAN_MANAGE"
+        #       group_name: "PowerUsers"
+        # model_training_job:
+        #   permissions:
+        #     - level: "CAN_MANAGE"
+        #       group_name: "PowerUsers"
+        # model_deployment_job:
+        #   permissions:
+        #     - level: "CAN_MANAGE"
+        #       group_name: "PowerUsers"
+        # batch_inference_job:
+        #   permissions:
+        #     - level: "CAN_MANAGE"
+        #       group_name: "PowerUsers"
 
 variables:
   catalog_name:
     description: "Name of the Unity Catalog to use"
-    default: "mlops_quickstart_dev"
+    default: "erni"
   schema_name:
     description: "Name of the schema to use within the catalog"
-    default: "iris"
+    default: "mlops_quickstart_dev"
   environment:
     description: "Environment name (dev/prod)"
     default: "dev"
