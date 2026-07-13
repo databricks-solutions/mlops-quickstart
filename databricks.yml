@@ -14,7 +14,7 @@ targets:
       catalog_name: mlops_quickstart_dev
       schema_name: iris
       environment: dev
-    # Override permissions for dev environment
+    # TODO: Set permissions for dev environment
     # resources:
     #   jobs:
         # data_ingestion_job:
@@ -51,7 +51,7 @@ targets:
       schema_name: iris
       environment: prod
     
-    # Override permissions for prod environment (only PowerUsers group)
+    # TODO: Set permissions for prod environment (only PowerUsers group)
     # resources:
     #   jobs:
         # data_ingestion_job:
@@ -74,10 +74,10 @@ targets:
 variables:
   catalog_name:
     description: "Name of the Unity Catalog to use"
-    default: "erni"
+    default: "mlops_quickstart_dev"
   schema_name:
     description: "Name of the schema to use within the catalog"
-    default: "mlops_quickstart_dev"
+    default: "iris"
   environment:
     description: "Environment name (dev/prod)"
     default: "dev"
