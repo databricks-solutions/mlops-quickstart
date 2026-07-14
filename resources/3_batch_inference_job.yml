@@ -1,7 +1,7 @@
 resources:
   jobs:
     batch_inference_job:
-      name: "Iris Batch Inference Job - ${var.environment}"
+      name: "3 - Iris Batch Inference Job - ${var.environment}"
       description: "Job to run batch inference using the iris classification model"
       
       # Email notifications on failure

@@ -1,7 +1,7 @@
 resources:
   jobs:
     model_training_job:
-      name: "Iris Model Training job - ${var.environment}"
+      name: "2.1 - Iris Model Training job - ${var.environment}"
       description: "Job to train iris classification model"
       
       # Email notifications on failure

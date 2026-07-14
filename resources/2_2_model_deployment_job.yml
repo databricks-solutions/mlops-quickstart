@@ -1,14 +1,14 @@
 resources:
   jobs:
     model_deployment_job:
-      name: "Iris Model Deployment Job - ${var.environment}"
+      name: "2.2 - Iris Model Deployment Job - ${var.environment}"
       description: "Job to evaluate, approve, and deploy iris classification model"
       
-      # Email notifications on failure
-      email_notifications:
-        on_failure:
-          - "your.name@address.com"
-        no_alert_for_skipped_runs: false
+      # TODO: Set up email notifications on failure
+      # email_notifications:
+      #   on_failure:
+      #     - "your.name@address.com" 
+      #   no_alert_for_skipped_runs: false
       
       # Job parameters
       parameters:
@@ -16,6 +16,7 @@ resources:
           default: "${var.catalog_name}.${var.schema_name}.iris_model"
         - name: "model_version"
           default: "1"
+
       
       # Job tasks with dependencies
       tasks:
@@ -28,7 +29,8 @@ resources:
             base_parameters:
               model_name: "{{job.parameters.model_name}}"
               model_version: "{{job.parameters.model_version}}"
-        
+              deployment_job_id: "{{job.id}}"
+              
         - task_key: "approval"
           description: "Approve model for deployment based on evaluation results"
           depends_on:
@@ -40,6 +42,7 @@ resources:
             base_parameters:
               model_name: "{{job.parameters.model_name}}"
               model_version: "{{job.parameters.model_version}}"
+
         
         - task_key: "deployment"
           description: "Deploy approved model to production endpoint"
