@@ -57,4 +57,4 @@ resources:
       # Tags for organization
       tags:
         Environment: "${var.environment}"
-        Project: "mlops-quickstart" 
+        Project: "mlops-exp-quickstart" 
