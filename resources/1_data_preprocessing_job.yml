@@ -1,7 +1,7 @@
 resources:
   jobs:
     data_ingestion_job:
-      name: "Iris Data Ingestion Job - ${var.environment}"
+      name: "1 - Iris Data Ingestion Job - ${var.environment}"
       description: "Job to ingest iris dataset from sklearn into Unity Catalog"
       
       # Email notifications on failure
