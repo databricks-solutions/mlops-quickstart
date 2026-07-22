@@ -74,7 +74,7 @@ Before you start adapting the project, run [0_CopySkillsToUsersFolder.ipynb](not
 
 If you have never set up user skills in this workspace before, open Genie Code, go to **Settings**, and click **Create skills folder** first:
 
-<img src="./figures/genie_code_create_skills_folder.png" alt="Genie Code settings with Create skills folder button" width="600"/>
+<img src="./figures/genie_code_create_skills_folder.png" alt="Genie Code settings with Create skills folder button" width="400"/>
 
 After that, run the notebook and Genie Code will pick up the skills the next time you use it. Start a new chat thread if you already had one open. You can also `@` mention a skill to use it on demand. See the [Genie Code skills docs](https://docs.databricks.com/aws/en/genie-code/skills) for full details.
 
