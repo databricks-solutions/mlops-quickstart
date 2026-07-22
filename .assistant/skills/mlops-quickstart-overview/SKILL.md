@@ -51,7 +51,7 @@ are wired through every notebook and job:
 | Parameter | Purpose | Default |
 |-----------|---------|---------|
 | `catalog_name` | Unity Catalog catalog for all tables and models | Set per target in `databricks.yml` |
-| `schema_name` | Schema within the catalog | `default` |
+| `schema_name` | Schema within the catalog | `iris` |
 | `model_version` | Model version (deployment notebooks only) | `1` |
 
 Rules to keep this contract intact:

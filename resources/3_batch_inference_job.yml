@@ -4,11 +4,11 @@ resources:
       name: "3 - Iris Batch Inference Job - ${var.environment}"
       description: "Job to run batch inference using the iris classification model"
       
-      # Email notifications on failure
-      email_notifications:
-        on_failure:
-          - "your.name@address.com"
-        no_alert_for_skipped_runs: false
+      # TODO: Set up email notifications on failure
+      # email_notifications:
+      #   on_failure:
+      #     - "your.name@address.com"
+      #   no_alert_for_skipped_runs: false
       
       # Job parameters
       parameters:

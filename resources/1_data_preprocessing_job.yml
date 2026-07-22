@@ -4,11 +4,11 @@ resources:
       name: "1 - Iris Data Ingestion Job - ${var.environment}"
       description: "Job to ingest iris dataset from sklearn into Unity Catalog"
       
-      # Email notifications on failure
-      email_notifications:
-        on_failure:
-          - "your.name@address.com"
-        no_alert_for_skipped_runs: false
+      # TODO: Set up email notifications on failure
+      # email_notifications:
+      #   on_failure:
+      #     - "your.name@address.com"
+      #   no_alert_for_skipped_runs: false
       
       # Job parameters
       parameters:
