@@ -12,7 +12,7 @@ As a part of this project, you will set up:
 - A job that uses the model to run inferences on the top of newly collected (unidentified) flowers
 - An MLflow 3 deployment job for automating the process of defining the model used for running the production inferences
 
-In the "Notebooks" folder, you'll find three groups of Python notebooks:
+In the "Notebooks" folder, you'll find [0_CopySkillsToUsersFolder.ipynb](notebooks/0_CopySkillsToUsersFolder.ipynb) and three groups of Python notebooks. Run the setup notebook first if you plan to use Genie Code to adapt this template (see [Adapt this template with Genie Code](#adapt-this-template-with-genie-code) below).
 1. **DataPreprocessing**: these are the notebooks that are used in the data preprocessing job. Within the "resources" folder, you will find a workflow called "data-preprocessing-job.yml" that basically triggers a simple data preprocessing notebook. This is just an example - we would certainly have additional notebooks for multi-stage preprocessing (e.g. source->bronze, bronze->silver, silver->gold).
 2. **ModelTrainingAndDeployment**: 
   - The "model-training.ipynb" notebook is used in the "model-training-job.yml" job, which can be found in the "resources" folder. It features the code to train a simple classification model and save it to the Unity Catalog. It is important to mention that this model should be registered with the *Challenger* alias every time it gets trained. *Challenger* is a term that is used to define a model that has the potential of becoming the official model for running inferences, but not necessarily will become it, unless formally validated. 
@@ -57,7 +57,7 @@ To bump a library, change the version once in `requirements.txt` — every noteb
 
 ## Adapt this template with Genie Code
 
-This repo ships with [Genie Code agent skills](https://docs.databricks.com/aws/en/genie-code/skills) under [`.assistant/skills/`](.assistant/skills/) so the Databricks Assistant can walk you through adapting the template to your own data, model, and inference pipelines. Each skill is narrowly scoped — the assistant loads it automatically when relevant:
+This repo ships with [Genie Code agent skills](https://docs.databricks.com/aws/en/genie-code/skills) under [`.assistant/skills/`](.assistant/skills/) so the Databricks Assistant can walk you through adapting the template to your own data, model, and inference pipelines. Each skill is narrowly scoped, and the assistant loads it automatically when relevant:
 
 | Skill | Use when you want to… |
 |-------|----------------------|
@@ -69,7 +69,13 @@ This repo ships with [Genie Code agent skills](https://docs.databricks.com/aws/e
 | [`adapt-bundle-and-cicd`](.assistant/skills/adapt-bundle-and-cicd/SKILL.md) | Adjust `databricks.yml`, job YAMLs, add a staging target, or wire up Azure DevOps / GitHub Actions secrets. |
 | [`manage-dependencies`](.assistant/skills/manage-dependencies/SKILL.md) | Add, pin, upgrade, or troubleshoot Python libraries via `requirements.txt`. |
 
-To use them, the skills must be discoverable from your workspace. Either copy the `.assistant/skills/` folder to your workspace root (`Workspace/.assistant/skills/`) for org-wide access, or to your user folder (`/Users/{username}/.assistant/skills/`) for personal use. See the [Genie Code skills docs](https://docs.databricks.com/aws/en/genie-code/skills) for full details.
+Before you start adapting the project, run [0_CopySkillsToUsersFolder.ipynb](notebooks/0_CopySkillsToUsersFolder.ipynb). It copies every skill from this repo into your personal skills folder at `/Users/{username}/.assistant/skills/`, which is where Genie Code looks for user skills. Run it once per workspace after you deploy or clone the project.
+
+If you have never set up user skills in this workspace before, open Genie Code, go to **Settings**, and click **Create skills folder** first:
+
+<img src="./figures/genie_code_create_skills_folder.png" alt="Genie Code settings with Create skills folder button" width="600"/>
+
+After that, run the notebook and Genie Code will pick up the skills the next time you use it. Start a new chat thread if you already had one open. You can also `@` mention a skill to use it on demand. See the [Genie Code skills docs](https://docs.databricks.com/aws/en/genie-code/skills) for full details.
 
 ## Learn more
  - Check out the [Big Book of MLOps](https://www.databricks.com/resources/ebook/the-big-book-of-mlops).

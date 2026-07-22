@@ -8,6 +8,8 @@ targets:
   dev:
     mode: development
     workspace:
+      # Optional: Set your dev workspace host here (otherwise, use profiles defined in your CD deployment pipeline e.g. .github/workflows/deploy.yml or ./azure-pipelines.yml)
+      # host: https://<your-workspace>.cloud.databricks.com
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     default: true
     variables:
@@ -45,6 +47,8 @@ targets:
   prod:
     mode: production
     workspace:
+      # Optional: Set your prod workspace host here (otherwise, use profiles defined in your CD deployment pipeline e.g. .github/workflows/deploy.yml or ./azure-pipelines.yml)
+      # host: https://<your-workspace>.cloud.databricks.com
       root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     variables:
       catalog_name: mlops_quickstart_prod
